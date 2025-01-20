@@ -1,7 +1,7 @@
 const express = require('express'); // Express importieren
 const app = express(); // Express-Anwendung erstellen
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 10000;
 
 // Middleware hinzufügen, um JSON-Daten zu parsen
 app.use(express.json());
