@@ -10,9 +10,20 @@ app.get('/', (req, res) => {
     res.send('Hello, your server is up and running!');
 });
 
-// API-Route zum Empfangen von Handydaten (z. B. vom QR-Code)
 app.post('/device-info', (req, res) => {
-    const { os, model, storage, color, battery } = req.body;
+  // Empfange die Daten im Request-Body
+  const deviceInfo = req.body;
+
+  // Protokolliere die empfangenen Daten in der Konsole
+  console.log('Empfangene Handydaten:', deviceInfo);
+
+  // Sende eine Antwort zurück an den Client
+  res.json({
+    status: 'success',
+    message: 'Daten empfangen',
+    data: deviceInfo,
+  });
+});
 
     // Überprüfen, ob die notwendigen Daten vorhanden sind
     if (!os || !model) {
