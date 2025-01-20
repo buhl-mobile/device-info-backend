@@ -1,17 +1,15 @@
-const express = require('express'); // Express importieren
-const app = express(); // Express-Anwendung erstellen
-
+const express = require('express');
+const app = express();
 const port = process.env.PORT || 10000;
 
-// Middleware hinzufügen, um JSON-Daten zu parsen
+// Middleware: JSON-Daten parsen
 app.use(express.json());
 
-// API-Route definieren
+// POST-Endpunkt für Handydaten
 app.post('/device-info', (req, res) => {
   const deviceInfo = req.body; // JSON-Daten aus der Anfrage lesen
-  console.log('Empfangene Handydaten:', deviceInfo);
-
-  // Prüfen, ob Daten vorhanden sind
+  
+  // Überprüfen, ob Daten gesendet wurden
   if (!deviceInfo || Object.keys(deviceInfo).length === 0) {
     return res.status(400).json({
       status: 'error',
@@ -19,7 +17,9 @@ app.post('/device-info', (req, res) => {
     });
   }
 
-  // Antwort senden
+  console.log('Empfangene Handydaten:', deviceInfo); // Log für Debugging
+
+  // Antwort mit den empfangenen Daten
   res.json({
     status: 'success',
     message: 'Daten empfangen',
