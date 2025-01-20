@@ -1,19 +1,16 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
+const port = process.env.PORT || 1000;
 
-// Middleware zum Parsen von JSON-Daten
-app.use(bodyParser.json());
+// Middleware, um JSON-Daten zu parsen
+app.use(express.json());
 
-// POST-Route, um die Handydaten zu empfangen
+// POST-Endpunkt zum Empfangen der Handydaten
 app.post('/device-info', (req, res) => {
-  // Empfange die Handydaten aus dem Request-Body
   const deviceInfo = req.body;
+  console.log('Empfangene Handydaten:', deviceInfo);  // Logge die empfangenen Daten
 
-  // Debugging: Die empfangenen Handydaten in der Konsole ausgeben
-  console.log('Empfangene Handydaten:', deviceInfo);
-
-  // Antworte dem Client mit einer Bestätigung
+  // Sende eine Antwort zurück
   res.json({
     status: 'success',
     message: 'Daten empfangen',
@@ -21,8 +18,6 @@ app.post('/device-info', (req, res) => {
   });
 });
 
-// Server starten
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server läuft auf Port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server läuft auf http://localhost:${port}`);
 });
