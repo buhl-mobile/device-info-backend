@@ -1,23 +1,29 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const winston = require('winston');  // Winston für Logging importieren
 const app = express();
-const port = process.env.PORT || 10000;
 
-// Middleware, um JSON-Daten zu verarbeiten
-app.use(express.json());
-
-// Einfache Route für Tests
-app.get('/', (req, res) => {
-    res.send('Hello, your server is up and running!');
+// Logging konfigurieren
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.simple(),
+  transports: [
+    new winston.transports.Console(),  // Logs in der Konsole anzeigen
+    new winston.transports.File({ filename: 'logs/app.log' })  // Logs in einer Datei speichern
+  ],
 });
 
+// Body Parser Middleware, um den Request-Body zu lesen
+app.use(bodyParser.json());
+
+// Beispiel-POST-Route für Handydaten
 app.post('/device-info', (req, res) => {
-  // Empfange die Daten im Request-Body
-  const deviceInfo = req.body;
+  const deviceInfo = req.body;  // Empfangene Daten aus dem Request-Body
 
-  // Protokolliere die empfangenen Daten in der Konsole
-  console.log('Empfangene Handydaten:', deviceInfo);
+  // Logge die empfangenen Daten
+  logger.info('Empfangene Handydaten:', deviceInfo);
 
-  // Sende eine Antwort zurück an den Client
+  // Antworte dem Client, dass die Daten erfolgreich empfangen wurden
   res.json({
     status: 'success',
     message: 'Daten empfangen',
@@ -25,25 +31,7 @@ app.post('/device-info', (req, res) => {
   });
 });
 
-    // Überprüfen, ob die notwendigen Daten vorhanden sind
-    if (!os || !model) {
-        return res.status(400).json({ error: 'Betriebssystem und Modell sind erforderlich.' });
-    }
-
-    // Hier kannst du die Daten weiterverarbeiten (z. B. in einer Datenbank speichern)
-    res.json({
-        message: 'Handydaten empfangen!',
-        data: {
-            os,
-            model,
-            storage: storage || 'Nicht angegeben',
-            color: color || 'Nicht angegeben',
-            battery: battery || 'Nicht angegeben'
-        }
-    });
-});
-
-// Starten des Servers
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+// Server starten
+app.listen(3000, () => {
+  logger.info('Server läuft auf Port 3000');
 });
