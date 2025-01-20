@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerätedaten erfassen</title>
+</head>
+<body>
+    <h1>Handydaten erfassen</h1>
+    <button id="sendData">Daten an API senden</button>
+
+    <script>
+        // Funktion, um Gerätedaten zu sammeln
+        function getDeviceData() {
+            const os = navigator.userAgent.includes("iPhone") ? "iOS" :
+                        navigator.userAgent.includes("Android") ? "Android" : "Unbekannt";
+            
+            const model = navigator.userAgent; // Dies ist ein Platzhalter, um das Modell zu ermitteln. 
+            // Es kann komplizierter sein, ein Modell genau zu ermitteln.
+            
+            const storage = "Nicht verfügbar"; // JavaScript kann keine Information zum Speicherplatz des Geräts liefern.
+
+            // Beispiel für eine einfache Implementierung, die nur das Betriebssystem ermittelt
+            return {
+                os: os,
+                model: model,
+                storage: storage,
+                color: "Nicht verfügbar",
+                battery: "Nicht verfügbar"
+            };
+        }
+
+        // Funktion zum Senden der Daten an die API
+        function sendDataToAPI() {
+            const deviceData = getDeviceData();
+            const url = 'https://device-info-backend.onrender.com/device-info'; // API-URL
+
+            // POST-Anfrage an die API
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(deviceData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Erfolgreich gesendet:', data);
+            })
+            .catch((error) => {
+                console.error('Fehler:', error);
+            });
+        }
+
+        // Event Listener für den Button
+        document.getElementById('sendData').addEventListener('click', sendDataToAPI);
+    </script>
+</body>
+</html>
