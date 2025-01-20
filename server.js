@@ -27,6 +27,11 @@ app.post('/device-info', (req, res) => {
   });
 });
 
+// GET-Route für die Basis-URL (optional)
+app.get('/', (req, res) => {
+  res.send('Willkommen bei der Device-Info-API! Benutze /device-info mit POST, um Daten zu senden.');
+});
+
 // Server starten
 app.listen(port, () => {
   console.log(`Server läuft auf Port ${port}`);
