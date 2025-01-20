@@ -3,57 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GerÃ¤tedaten erfassen</title>
+    <title>Handydaten Empfang</title>
 </head>
 <body>
-    <h1>Handydaten erfassen</h1>
-    <button id="sendData">Daten an API senden</button>
+    <h1>QR Code scannen, um Handydaten zu senden</h1>
+    <p>Scanne den QR-Code, um deine Handydaten zu senden:</p>
+
+    <!-- QR-Code mit URL für die API -->
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://deine-domain/device-info&size=200x200" alt="QR Code">
+    
+    <!-- Platz, um die Handydaten nach Empfang anzuzeigen -->
+    <div id="deviceData"></div>
 
     <script>
-        // Funktion, um GerÃ¤tedaten zu sammeln
-        function getDeviceData() {
-            const os = navigator.userAgent.includes("iPhone") ? "iOS" :
-                        navigator.userAgent.includes("Android") ? "Android" : "Unbekannt";
-            
-            const model = navigator.userAgent; // Dies ist ein Platzhalter, um das Modell zu ermitteln. 
-            // Es kann komplizierter sein, ein Modell genau zu ermitteln.
-            
-            const storage = "Nicht verfÃ¼gbar"; // JavaScript kann keine Information zum Speicherplatz des GerÃ¤ts liefern.
-
-            // Beispiel fÃ¼r eine einfache Implementierung, die nur das Betriebssystem ermittelt
-            return {
-                os: os,
-                model: model,
-                storage: storage,
-                color: "Nicht verfÃ¼gbar",
-                battery: "Nicht verfÃ¼gbar"
+        // Hier kannst du die Handydaten abfragen, wenn der Kunde die Seite betritt
+        window.onload = function () {
+            // Eine Funktion, um Handydaten vom Gerät zu bekommen (z. B. mit JavaScript)
+            const deviceInfo = {
+                os: navigator.platform, // Betriebssystem des Geräts
+                model: navigator.userAgent, // Modell könnte durch User-Agent ermittelt werden
+                storage: '128GB', // Hier müsstest du eine Möglichkeit finden, den tatsächlichen Speicher des Geräts zu ermitteln
+                battery: '85%' // Beispielwert, um Batterieinformationen zu übermitteln
             };
-        }
 
-        // Funktion zum Senden der Daten an die API
-        function sendDataToAPI() {
-            const deviceData = getDeviceData();
-            const url = 'https://device-info-backend.onrender.com/device-info'; // API-URL
-
-            // POST-Anfrage an die API
-            fetch(url, {
+            // Sende die Handydaten via POST-Request an das Backend
+            fetch('https://deine-domain/device-info', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(deviceData)
+                body: JSON.stringify(deviceInfo)
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Erfolgreich gesendet:', data);
+                // Anzeige der gesendeten Daten
+                document.getElementById('deviceData').innerHTML = `Daten empfangen: ${JSON.stringify(data)}`;
             })
-            .catch((error) => {
-                console.error('Fehler:', error);
+            .catch(error => {
+                console.error('Fehler beim Senden der Daten:', error);
             });
-        }
-
-        // Event Listener fÃ¼r den Button
-        document.getElementById('sendData').addEventListener('click', sendDataToAPI);
+        };
     </script>
 </body>
 </html>
