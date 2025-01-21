@@ -1,17 +1,12 @@
 {
   "name": "device-info-backend",
   "version": "1.0.0",
-  "description": "Backend für das mobile Device-Info-Projekt",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
-  },
-  "engines": {
-    "node": "14.x"
-  },
-  "author": "Dein Name",
-  "license": "MIT"
+    "express": "^4.x.x",
+    "cors": "^2.x.x"
+  }
 }
